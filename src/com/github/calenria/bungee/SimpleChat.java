@@ -16,10 +16,7 @@ public class SimpleChat extends JavaPlugin {
     @Override
     public void onEnable() {
         log = Logger.$();
-
-        // Register our global plugin channel
         BungeeCord.instance.registerPluginChannel("SimpleChat");
-
         log.info("[SimpleChat] Enabled v0.0.1");
     }
 
@@ -28,20 +25,21 @@ public class SimpleChat extends JavaPlugin {
         if (!event.getTag().equals("SimpleChat"))
             return;
 
-        // Disallow clients from spoofing the SGBungee packet
         if (event.getDestination() != Destination.CLIENT) {
             event.setCancelled(true);
             return;
         }
-        //
-        // String[] data = event.getData().split("@#@");
-        // String displayName = ChatColor.translateAlternateColorCodes('&', data[0]);
-        // String format = ChatColor.translateAlternateColorCodes('&', data[1]);
-        // String message = ChatColor.translateAlternateColorCodes('&', data[2]);
-
-        // PacketFAPluginMessage pMessage = new PacketFAPluginMessage("SimpleChat", event.getData().getBytes());
 
         String message = event.getData();
+        if (message.startsWith("@#login@")) {
+            String name = event.getData().substring(8);
+            if (name.length() >= 16) {
+                name = name.substring(0, 16);
+            }
+            event.getConnection().setTabListName(name);
+            return;
+        }
+
         if (message.startsWith("@#@")) {
             String[] data = event.getData().substring(3).split("@#@");
             String to = "";
@@ -90,18 +88,5 @@ public class SimpleChat extends JavaPlugin {
             }
         }
 
-        // event.getPlayer().getDisplayName() + "@#@" + event.getFormat() + "" + event.getMessage();
-
-        // // Split the message to get server/gate
-        // String[] data = event.getData().split("@#@");
-        // String server = data[0];
-        // String gate = data[1];
-        //
-        // // Switch server, and setup tag to kill old connection
-        // event.getConnection().connect(server);
-        // event.setTag("KillCon");
-        //
-        // // Send a message to Stargate on the new server to teleport the player
-        // event.getConnection().sendPluginMessage("SimpleChat", gate.getBytes());
     }
 }
