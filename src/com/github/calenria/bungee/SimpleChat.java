@@ -22,27 +22,32 @@ public class SimpleChat extends JavaPlugin {
 
     @Override
     public void onPluginMessage(PluginMessageEvent event) {
-        if (!event.getTag().equals("SimpleChat"))
+
+        String message = event.getData();
+        System.out.println(event.getTag());
+        System.out.println(message);
+
+        if (!event.getTag().equals("SimpleChat")) {
             return;
+        }
 
         if (event.getDestination() != Destination.CLIENT) {
             event.setCancelled(true);
             return;
         }
 
-        String message = event.getData();
         if (message.startsWith("@#login@")) {
-            String name = event.getData().substring(8);
+            String name = message.substring(8);
             if (name.length() >= 16) {
                 name = name.substring(0, 16);
             }
             event.getConnection().setTabListName(name);
-            
+            event.setCancelled(true);
             return;
         }
 
         if (message.startsWith("@#@")) {
-            String[] data = event.getData().substring(3).split("@#@");
+            String[] data = message.substring(3).split("@#@");
             String to = "";
             if (data[1] != null && data[1].length() >= 0) {
                 to = data[1];
