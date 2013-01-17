@@ -1,5 +1,5 @@
 
-<project default="jar" name="SimpleChat">
+<project default="jar" name="SimpleChat-Bungee">
 	<property name="base.dir" value="." />
 	<property name="src.dir" value="src" />
 	<property name="lib.dir" value="lib" />
