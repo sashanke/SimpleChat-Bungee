@@ -50,6 +50,11 @@
 	</target>
 
 	<target name="jar" depends="compile">
+		<delete>
+		   <fileset dir="${jar.dir}">
+		      <include name="*"/>
+		   </fileset>
+		</delete>
 		<git-revision path="${base.dir}" output="version" />
 		<mkdir dir="${jar.dir}" />
 		
