@@ -37,6 +37,7 @@ public class SimpleChat extends JavaPlugin {
                 name = name.substring(0, 16);
             }
             event.getConnection().setTabListName(name);
+            
             return;
         }
 
