@@ -22,11 +22,6 @@ public class SimpleChat extends JavaPlugin {
 
     @Override
     public void onPluginMessage(PluginMessageEvent event) {
-
-        String message = event.getData();
-        System.out.println(event.getTag());
-        System.out.println(message);
-
         if (!event.getTag().equals("SimpleChat")) {
             return;
         }
@@ -35,7 +30,7 @@ public class SimpleChat extends JavaPlugin {
             event.setCancelled(true);
             return;
         }
-
+        String message = event.getData();
         if (message.startsWith("@#login@")) {
             String name = message.substring(8);
             if (name.length() >= 16) {
@@ -83,9 +78,7 @@ public class SimpleChat extends JavaPlugin {
         }
 
         String srcServer = event.getConnection().getServer();
-
         Set<Entry<String, UserConnection>> connSet = BungeeCord.instance.connections.entrySet();
-
         for (Entry<String, UserConnection> entry : connSet) {
             UserConnection con = entry.getValue();
             if (!con.getServer().equals(srcServer)) {
