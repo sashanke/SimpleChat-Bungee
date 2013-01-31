@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.Logger;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -18,13 +19,15 @@ import com.google.common.eventbus.Subscribe;
 
 public class SimpleChatListener implements Listener {
 
+    private static Logger log = Logger.$();
+
     @Subscribe
     public void onPluginMessage(PluginMessageEvent event) {
         if (!event.getTag().equals("SimpleChat"))
             return;
 
         String pluginMessage = new String(event.getData());
-        System.out.println(pluginMessage);
+        log.info("Recived plugin message: " + pluginMessage);
 
         StringTokenizer st = new StringTokenizer(pluginMessage, "@#@");
         String type = st.nextToken();
@@ -87,7 +90,7 @@ public class SimpleChatListener implements Listener {
     }
 
     private void sendPluginMessage(String pluginMessage, Entry<String, ServerInfo> server) {
-        System.out.println("Sending Message to: " + server.getKey());
+        log.info("Sending Message to: " + server.getKey());
         List<ProxiedPlayer> pPlayers = new ArrayList<ProxiedPlayer>(server.getValue().getPlayers());
         if (!pPlayers.isEmpty()) {
             ProxiedPlayer pPlayer = pPlayers.get(0);
@@ -96,7 +99,7 @@ public class SimpleChatListener implements Listener {
     }
 
     private void sendPluginMessage(String pluginMessage, Server server) {
-        System.out.println("Sending Message to: " + server.getInfo().getName());
+        log.info("Sending Message to: " + server.getInfo().getName());
         server.sendData("SimpleChat", pluginMessage.getBytes());
     }
 }
