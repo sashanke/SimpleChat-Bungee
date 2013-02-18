@@ -43,13 +43,12 @@ public class SimpleChatListener implements Listener {
 
     @Subscribe
     public void onPluginMessage(PluginMessageEvent event) {
-        if (!event.getTag().equals("SimpleChat"))
-            return;
-
         String pluginMessage = new String(event.getData());
         if (SimpleChat.debug) {
             log.info("Recived plugin message: " + pluginMessage);
         }
+        if (!event.getTag().equals("SimpleChat"))
+            return;
 
         StringTokenizer st = new StringTokenizer(pluginMessage, "@#@");
         String type = st.nextToken();
