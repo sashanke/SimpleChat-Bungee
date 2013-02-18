@@ -79,7 +79,9 @@ public class SimpleChatListener implements Listener {
             String from = st.nextToken();
             String to = st.nextToken();
             String message = st.nextToken();
-
+            while (st.hasMoreTokens()) {
+                message += "@" + st.nextToken();
+            }
             ProxiedPlayer fromPlayer = BungeeCord.getInstance().getPlayer(from);
             ProxiedPlayer toPlayer = BungeeCord.getInstance().getPlayer(to);
             if (toPlayer != null) {
