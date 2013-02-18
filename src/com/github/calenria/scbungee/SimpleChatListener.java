@@ -47,7 +47,9 @@ public class SimpleChatListener implements Listener {
             return;
 
         String pluginMessage = new String(event.getData());
-        // log.info("Recived plugin message: " + pluginMessage);
+        if (SimpleChat.debug) {
+            log.info("Recived plugin message: " + pluginMessage);
+        }
 
         StringTokenizer st = new StringTokenizer(pluginMessage, "@#@");
         String type = st.nextToken();
@@ -111,7 +113,9 @@ public class SimpleChatListener implements Listener {
     }
 
     private void sendPluginMessage(String pluginMessage, Entry<String, ServerInfo> server) {
-        // log.info("Sending Message to: " + server.getKey());
+        if (SimpleChat.debug) {
+            log.info("Sending Message to: " + server.getKey());
+        }
         List<ProxiedPlayer> pPlayers = new ArrayList<ProxiedPlayer>(server.getValue().getPlayers());
         if (!pPlayers.isEmpty()) {
             ProxiedPlayer pPlayer = pPlayers.get(0);
@@ -120,7 +124,9 @@ public class SimpleChatListener implements Listener {
     }
 
     private void sendPluginMessage(String pluginMessage, Server server) {
-        // log.info("Sending Message to: " + server.getInfo().getName());
+        if (SimpleChat.debug) {
+            log.info("Sending Message to: " + server.getInfo().getName());
+        }
         server.sendData("SimpleChat", pluginMessage.getBytes());
     }
 
@@ -128,7 +134,9 @@ public class SimpleChatListener implements Listener {
         List<ProxiedPlayer> pPlayers = new ArrayList<ProxiedPlayer>(BungeeCord.getInstance().getPlayers());
         if (!pPlayers.isEmpty()) {
             for (ProxiedPlayer proxiedPlayer : pPlayers) {
-                log.info("Sending Message to: " + proxiedPlayer.getName());
+                if (SimpleChat.debug) {
+                    log.info("Sending Message to: " + proxiedPlayer.getName());
+                }
                 proxiedPlayer.sendMessage(msg);
             }
         }
