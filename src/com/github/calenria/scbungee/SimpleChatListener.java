@@ -113,18 +113,20 @@ public class SimpleChatListener implements Listener {
 
     private void sendPluginMessage(String pluginMessage, Entry<String, ServerInfo> server) {
         if (SimpleChat.debug) {
-            log.info("Sending Message to: " + server.getKey());
+            log.info("[perUser] Sending Message to: " + server.getKey());
         }
         List<ProxiedPlayer> pPlayers = new ArrayList<ProxiedPlayer>(server.getValue().getPlayers());
         if (!pPlayers.isEmpty()) {
             ProxiedPlayer pPlayer = pPlayers.get(0);
             pPlayer.sendData("SimpleChat", pluginMessage.getBytes());
+        } else {
+            log.info("No Player found on Server: " + server.getKey());
         }
     }
 
     private void sendPluginMessage(String pluginMessage, Server server) {
         if (SimpleChat.debug) {
-            log.info("Sending Message to: " + server.getInfo().getName());
+            log.info("[perServer] Sending Message to: " + server.getInfo().getName());
         }
         server.sendData("SimpleChat", pluginMessage.getBytes());
     }
