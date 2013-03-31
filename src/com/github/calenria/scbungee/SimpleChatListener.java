@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import net.md_5.bungee.BungeeCord;
-import net.md_5.bungee.Logger;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,14 +20,12 @@ import com.google.common.eventbus.Subscribe;
 
 public class SimpleChatListener implements Listener {
 
-    private static Logger log = Logger.$();
-
     @Subscribe
     public void onLogin(LoginEvent event) {
         if (SimpleChat.hideStream) {
             return;
         }
-        log.info("Player Login: " + event.getConnection().getName());
+        BungeeCord.getInstance().getLogger().info("Player Login: " + event.getConnection().getName());
         sendAll(ChatColor.translateAlternateColorCodes('&', String.format(SimpleChat.messages.getString("login"), event.getConnection().getName())));
     }
 
@@ -37,7 +34,7 @@ public class SimpleChatListener implements Listener {
         if (SimpleChat.hideStream) {
             return;
         }
-        log.info("Player Disconnect: " + event.getPlayer().getName());
+        BungeeCord.getInstance().getLogger().info("Player Disconnect: " + event.getPlayer().getName());
         sendAll(ChatColor.translateAlternateColorCodes('&', String.format(SimpleChat.messages.getString("logout"), event.getPlayer().getName())));
     }
 
@@ -45,7 +42,7 @@ public class SimpleChatListener implements Listener {
     public void onPluginMessage(PluginMessageEvent event) {
         String pluginMessage = new String(event.getData());
         if (SimpleChat.debug) {
-            log.info("Recived plugin message: " + pluginMessage);
+        	BungeeCord.getInstance().getLogger().info("Recived plugin message: " + pluginMessage);
         }
         if (!event.getTag().equals("SimpleChat"))
             return;
@@ -113,20 +110,20 @@ public class SimpleChatListener implements Listener {
 
     private void sendPluginMessage(String pluginMessage, Entry<String, ServerInfo> server) {
         if (SimpleChat.debug) {
-            log.info("[perUser] Sending Message to: " + server.getKey());
+        	BungeeCord.getInstance().getLogger().info("[perUser] Sending Message to: " + server.getKey());
         }
         List<ProxiedPlayer> pPlayers = new ArrayList<ProxiedPlayer>(server.getValue().getPlayers());
         if (!pPlayers.isEmpty()) {
             ProxiedPlayer pPlayer = pPlayers.get(0);
             pPlayer.sendData("SimpleChat", pluginMessage.getBytes());
         } else {
-            log.info("No Player found on Server: " + server.getKey());
+        	BungeeCord.getInstance().getLogger().info("No Player found on Server: " + server.getKey());
         }
     }
 
     private void sendPluginMessage(String pluginMessage, Server server) {
         if (SimpleChat.debug) {
-            log.info("[perServer] Sending Message to: " + server.getInfo().getName());
+        	BungeeCord.getInstance().getLogger().info("[perServer] Sending Message to: " + server.getInfo().getName());
         }
         server.sendData("SimpleChat", pluginMessage.getBytes());
     }
@@ -136,7 +133,7 @@ public class SimpleChatListener implements Listener {
         if (!pPlayers.isEmpty()) {
             for (ProxiedPlayer proxiedPlayer : pPlayers) {
                 if (SimpleChat.debug) {
-                    log.info("Sending Message to: " + proxiedPlayer.getName());
+                	BungeeCord.getInstance().getLogger().info("Sending Message to: " + proxiedPlayer.getName());
                 }
                 proxiedPlayer.sendMessage(msg);
             }
