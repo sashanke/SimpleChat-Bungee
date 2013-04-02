@@ -11,11 +11,9 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import net.md_5.bungee.BungeeCord;
-import net.md_5.bungee.Logger;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class SimpleChat extends Plugin {
-    private static Logger        log          = Logger.$();
     public static ResourceBundle messages     = null;
     public static String         pluginPath   = "./plugins/SimpleChat-Bungee/";
     public File                  messagesFile = new File(pluginPath + "messages.properties");
@@ -37,7 +35,7 @@ public class SimpleChat extends Plugin {
                 out.newLine();
                 out.close();
             } catch (Exception ex) {
-                log.warning(ex.getLocalizedMessage());
+                BungeeCord.getInstance().getLogger().warning(ex.getLocalizedMessage());
             }
         }
 
@@ -63,7 +61,7 @@ public class SimpleChat extends Plugin {
                 out.newLine();
                 out.close();
             } catch (Exception e) {
-                log.warning(e.getLocalizedMessage());
+                BungeeCord.getInstance().getLogger().warning(e.getLocalizedMessage());
             }
         }
         try {
