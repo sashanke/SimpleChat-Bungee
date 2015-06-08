@@ -1,11 +1,5 @@
 package com.github.calenria.scbungee;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.StringTokenizer;
-
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -15,12 +9,17 @@ import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
 
-import com.google.common.eventbus.Subscribe;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.StringTokenizer;
 
 public class SimpleChatListener implements Listener {
 
-    @Subscribe
+    @EventHandler
     public void onLogin(LoginEvent event) {
         if (SimpleChat.hideStream) {
             return;
@@ -29,7 +28,7 @@ public class SimpleChatListener implements Listener {
         sendAll(ChatColor.translateAlternateColorCodes('&', String.format(SimpleChat.messages.getString("login"), event.getConnection().getName())));
     }
 
-    @Subscribe
+    @EventHandler
     public void onDisconnect(PlayerDisconnectEvent event) {
         if (SimpleChat.hideStream) {
             return;
@@ -38,14 +37,15 @@ public class SimpleChatListener implements Listener {
         sendAll(ChatColor.translateAlternateColorCodes('&', String.format(SimpleChat.messages.getString("logout"), event.getPlayer().getName())));
     }
 
-    @Subscribe
+    @EventHandler
     public void onPluginMessage(PluginMessageEvent event) {
         String pluginMessage = new String(event.getData());
         if (SimpleChat.debug) {
-        	BungeeCord.getInstance().getLogger().info("Recived plugin message: " + pluginMessage);
+            BungeeCord.getInstance().getLogger().info("Recived plugin message: " + pluginMessage);
         }
-        if (!event.getTag().equals("SimpleChat"))
+        if (!event.getTag().equals("SimpleChat")) {
             return;
+        }
 
         StringTokenizer st = new StringTokenizer(pluginMessage, "@#@");
         String type = st.nextToken();
@@ -90,7 +90,8 @@ public class SimpleChatListener implements Listener {
                 }
             } else {
                 if (fromPlayer != null) {
-                    fromPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Fehler beim Ermitteln des Chat Partners. Offline oder Verschrieben? (" + to + ")"));
+                    fromPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&4Fehler beim Ermitteln des Chat Partners. Offline oder Verschrieben? (" + to + ")"));
                 }
             }
 
@@ -110,20 +111,20 @@ public class SimpleChatListener implements Listener {
 
     private void sendPluginMessage(String pluginMessage, Entry<String, ServerInfo> server) {
         if (SimpleChat.debug) {
-        	BungeeCord.getInstance().getLogger().info("[perUser] Sending Message to: " + server.getKey());
+            BungeeCord.getInstance().getLogger().info("[perUser] Sending Message to: " + server.getKey());
         }
         List<ProxiedPlayer> pPlayers = new ArrayList<ProxiedPlayer>(server.getValue().getPlayers());
         if (!pPlayers.isEmpty()) {
             ProxiedPlayer pPlayer = pPlayers.get(0);
             pPlayer.sendData("SimpleChat", pluginMessage.getBytes());
         } else {
-        	BungeeCord.getInstance().getLogger().info("No Player found on Server: " + server.getKey());
+            BungeeCord.getInstance().getLogger().info("No Player found on Server: " + server.getKey());
         }
     }
 
     private void sendPluginMessage(String pluginMessage, Server server) {
         if (SimpleChat.debug) {
-        	BungeeCord.getInstance().getLogger().info("[perServer] Sending Message to: " + server.getInfo().getName());
+            BungeeCord.getInstance().getLogger().info("[perServer] Sending Message to: " + server.getInfo().getName());
         }
         server.sendData("SimpleChat", pluginMessage.getBytes());
     }
@@ -133,7 +134,7 @@ public class SimpleChatListener implements Listener {
         if (!pPlayers.isEmpty()) {
             for (ProxiedPlayer proxiedPlayer : pPlayers) {
                 if (SimpleChat.debug) {
-                	BungeeCord.getInstance().getLogger().info("Sending Message to: " + proxiedPlayer.getName());
+                    BungeeCord.getInstance().getLogger().info("Sending Message to: " + proxiedPlayer.getName());
                 }
                 proxiedPlayer.sendMessage(msg);
             }
