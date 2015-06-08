@@ -5,6 +5,6 @@ Simple Global Chat (BungeeCord part)
 
 Downloads:
 
-[Letzter Erfolgreicher Build](http://ci.skymine.de/job/SimpleChat-Bungee/lastSuccessfulBuild/)
+[Letzter Erfolgreicher Build](https://github.com/Calenria/SimpleChat-Bungee/releases/download/v0.4.2/SimpleChat-Bungee.jar)
 
-[Bukkit Plugin](http://ci.skymine.de/job/SimpleChat/lastSuccessfulBuild/)
+[Bukkit Plugin](https://github.com/Calenria/SimpleChat/releases/download/v0.4.2/SimpleChat.jar)
