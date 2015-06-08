@@ -112,10 +112,13 @@ public class SimpleChatListener implements Listener {
                 String serverName = st.nextToken();
                 Map<String, ServerInfo> servers = BungeeCord.getInstance().getServers();
                 for (Entry<String, ServerInfo> server : servers.entrySet()) {
-                    if (!server.getKey().equals(serverName) && !type.equals("spy")) {
+                    if (!server.getKey().equals(serverName) && !type.equals("spy") && !type.equals("pmspy")) {
                         sendPluginMessage(pluginMessage, server);
                     }
                     if (type.equals("spy")) {
+                        sendPluginMessage(pluginMessage, server);
+                    }
+                    if (type.equals("pmspy")) {
                         sendPluginMessage(pluginMessage, server);
                     }
                 }
